@@ -1,32 +1,30 @@
-import React from 'react';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 
 const Auth0ProviderWithHistory = ({ children }) => {
-  const domain = import.meta.env.VITE_AUTH0_DOMAIN;
-  const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
-  const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
-  const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL; // New environment variable
+const domain = import.meta.env.VITE_AUTH0_DOMAIN;
+const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
+const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
-  const onRedirectCallback = (appState) => {
-    navigate(appState?.returnTo || window.location.pathname);
-  };
+const onRedirectCallback = (appState) => {
+navigate(appState?.returnTo || window.location.pathname);
+};
 
-  return (
-    <Auth0Provider
-      domain={domain}
-      clientId={clientId}
-      authorizationParams={{
-        redirect_uri: redirectUri, // Use the environment variable
-        ...(audience ? { audience } : null),
-      }}
-      onRedirectCallback={onRedirectCallback}
-    >
-      {children}
-    </Auth0Provider>
-  );
+return (
+<Auth0Provider
+domain={domain}
+clientId={clientId}
+authorizationParams={{
+redirect_uri: window.location.origin,
+...(audience ? { audience } : null),
+}}
+onRedirectCallback={onRedirectCallback}
+>
+{children}
+</Auth0Provider>
+);
 };
 
 export default Auth0ProviderWithHistory;
